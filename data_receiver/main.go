@@ -49,6 +49,7 @@ func (dr *DataReceiver) wsReceiveLoop() {
 			continue
 		}
 		fmt.Printf("received data from [%d] :: lat %.2f, long %.2f \n", data.OBUID, data.Lat, data.Long)
+		// testing
 		// dr.msgChan <- data
 	}
 }
