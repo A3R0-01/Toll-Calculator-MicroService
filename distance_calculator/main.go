@@ -2,6 +2,8 @@ package main
 
 import (
 	"log"
+
+	"tollCalculator.com/aggregator/client"
 )
 
 // type DistanceCalculator struct {
@@ -9,7 +11,8 @@ import (
 // }
 
 var (
-	kafkatopic = "obuData"
+	kafkatopic         = "obuData"
+	aggregatorEndpoint = "http://127.0.0.1:3000/aggregate"
 )
 
 // Transport (HTTP, GRPC, KAFKA) -> attach business Logic
@@ -25,7 +28,8 @@ func main() {
 	// if err != nil {
 	// 	log.Fatal(err)
 	// }
-	kafkaConsumer, err := NewKafkaConsumer(kafkatopic, svc)
+
+	kafkaConsumer, err := NewKafkaConsumer(kafkatopic, svc, client.NewClient(aggregatorEndpoint))
 	if err != nil {
 		log.Fatal(err)
 	}
