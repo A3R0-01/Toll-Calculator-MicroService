@@ -9,17 +9,17 @@ import (
 	"tollCalculator.com/types"
 )
 
-type Client struct {
+type HTTPClient struct {
 	Endpoint string
 }
 
-func NewClient(endpoint string) *Client {
-	return &Client{
+func NewClient(endpoint string) *HTTPClient {
+	return &HTTPClient{
 		Endpoint: endpoint,
 	}
 }
 
-func (c *Client) AggregateDistance(distance types.Distance) error {
+func (c *HTTPClient) AggregateDistance(distance types.Distance) error {
 
 	b, err := json.Marshal(distance)
 	if err != nil {

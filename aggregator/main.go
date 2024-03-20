@@ -1,16 +1,22 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"flag"
 	"fmt"
+	"log"
 	"net"
 	"net/http"
 	"strconv"
+	"time"
 
 	"google.golang.org/grpc"
+	"tollCalculator.com/aggregator/client"
 	"tollCalculator.com/types"
 )
+
+const grpcEndpoint = "127.0.0.1:3001"
 
 func main() {
 	httpListenAddress := flag.String("httpAddress", ":3000", "the listen address of the http server")
@@ -21,7 +27,21 @@ func main() {
 		svc = NewInvoiceAggregator(store)
 	)
 	svc = NewLogMiddleware(svc)
-	go makeGRPCTransport(*grpcListenAddress, svc)
+	go func() {
+		log.Fatal(makeGRPCTransport(*grpcListenAddress, svc))
+	}()
+	time.Sleep(time.Second * 2)
+	c, err := client.NewGRPCClient(grpcEndpoint)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if _, err := c.Aggregate(context.Background(), &types.AggregateRequest{
+		ObuID: 1,
+		Value: 30.84,
+		Unix:  time.Now().UnixNano(),
+	}); err != nil {
+		log.Fatal(err)
+	}
 	makeHttpTransport(*httpListenAddress, svc)
 	fmt.Println("this is working just fine")
 }
@@ -29,7 +49,7 @@ func main() {
 func makeGRPCTransport(listenAddress string, svc Aggregator) error {
 	fmt.Println("GRPC running on port ", listenAddress)
 	// make a TCP listeners
-	ln, err := net.Listen("TCP", listenAddress)
+	ln, err := net.Listen("tcp", listenAddress)
 
 	if err != nil {
 		return err
@@ -46,7 +66,7 @@ func makeHttpTransport(listenAddress string, svc Aggregator) {
 	fmt.Println("HTTP transport running on port ", listenAddress)
 	http.HandleFunc("/aggregate", handleAggregate(svc))
 	http.HandleFunc("/invoice", handleGetInvoice(svc))
-	http.ListenAndServe(listenAddress, nil)
+	log.Fatal(http.ListenAndServe(listenAddress, nil))
 }
 
 func handleGetInvoice(svc Aggregator) http.HandlerFunc {
