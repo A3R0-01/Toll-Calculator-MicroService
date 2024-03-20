@@ -1,7 +1,14 @@
-syntax = "proto3"
+syntax = "proto3";
 
-option go_package = "tollCalculator.com/types"
-
-message Test {
-    int32 someint = 1
+option go_package = "tollCalculator.com/types";
+service Aggregator{
+    rpc Aggregate (AggregateRequest) returns (None);
 }
+
+message AggregateRequest {
+    int32 ObuID = 1;
+    double Value = 2;
+    int64 Unix = 3;
+}
+
+message None{}
