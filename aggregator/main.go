@@ -31,11 +31,8 @@ func main() {
 		log.Fatal(makeGRPCTransport(*grpcListenAddress, svc))
 	}()
 	time.Sleep(time.Second * 2)
-	c, err := client.NewGRPCClient(grpcEndpoint)
-	if err != nil {
-		log.Fatal(err)
-	}
-	if _, err := c.Aggregate(context.Background(), &types.AggregateRequest{
+	c := client.NewGRPCClient(grpcEndpoint)
+	if err := c.Aggregate(context.Background(), &types.AggregateRequest{
 		ObuID: 1,
 		Value: 30.84,
 		Unix:  time.Now().UnixNano(),
