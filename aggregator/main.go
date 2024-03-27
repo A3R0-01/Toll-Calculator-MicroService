@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"google.golang.org/grpc"
 	"tollCalculator.com/aggregator/client"
 	"tollCalculator.com/types"
@@ -62,6 +63,7 @@ func makeHttpTransport(listenAddress string, svc Aggregator) {
 	fmt.Println("HTTP transport running on port ", listenAddress)
 	http.HandleFunc("/aggregate", handleAggregate(svc))
 	http.HandleFunc("/invoice", handleGetInvoice(svc))
+	http.Handle("/metrics", promhttp.Handler())
 	log.Fatal(http.ListenAndServe(listenAddress, nil))
 }
 

@@ -4,3 +4,8 @@
 
 ## Data Receiver
 
+## Installing Prometheus golang client
+
+```
+go get github.com/prometheus/client_golang/prometheus
+```
