@@ -3,6 +3,7 @@ syntax = "proto3";
 option go_package = "tollCalculator.com/types";
 service Aggregator{
     rpc Aggregate (AggregateRequest) returns (None);
+    rpc GetInvoice (GetInvoiceRequest) returns (GetInvoiceResponse);
 }
 
 message AggregateRequest {
@@ -10,5 +11,12 @@ message AggregateRequest {
     double Value = 2;
     int64 Unix = 3;
 }
-
+message GetInvoiceResponse {
+    int32 ObuID = 1;
+    float TotalDistance = 2;
+    float TotalAmount = 3;
+}
+message GetInvoiceRequest {
+    int32 ObuID = 1;
+}
 message None{}

@@ -83,6 +83,116 @@ func (x *AggregateRequest) GetUnix() int64 {
 	return 0
 }
 
+type GetInvoiceResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	ObuID         int32   `protobuf:"varint,1,opt,name=ObuID,proto3" json:"ObuID,omitempty"`
+	TotalDistance float32 `protobuf:"fixed32,2,opt,name=TotalDistance,proto3" json:"TotalDistance,omitempty"`
+	TotalAmount   float32 `protobuf:"fixed32,3,opt,name=TotalAmount,proto3" json:"TotalAmount,omitempty"`
+}
+
+func (x *GetInvoiceResponse) Reset() {
+	*x = GetInvoiceResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_types_ptypes_proto_msgTypes[1]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetInvoiceResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetInvoiceResponse) ProtoMessage() {}
+
+func (x *GetInvoiceResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_types_ptypes_proto_msgTypes[1]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetInvoiceResponse.ProtoReflect.Descriptor instead.
+func (*GetInvoiceResponse) Descriptor() ([]byte, []int) {
+	return file_types_ptypes_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *GetInvoiceResponse) GetObuID() int32 {
+	if x != nil {
+		return x.ObuID
+	}
+	return 0
+}
+
+func (x *GetInvoiceResponse) GetTotalDistance() float32 {
+	if x != nil {
+		return x.TotalDistance
+	}
+	return 0
+}
+
+func (x *GetInvoiceResponse) GetTotalAmount() float32 {
+	if x != nil {
+		return x.TotalAmount
+	}
+	return 0
+}
+
+type GetInvoiceRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	ObuID int32 `protobuf:"varint,1,opt,name=ObuID,proto3" json:"ObuID,omitempty"`
+}
+
+func (x *GetInvoiceRequest) Reset() {
+	*x = GetInvoiceRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_types_ptypes_proto_msgTypes[2]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetInvoiceRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetInvoiceRequest) ProtoMessage() {}
+
+func (x *GetInvoiceRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_types_ptypes_proto_msgTypes[2]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetInvoiceRequest.ProtoReflect.Descriptor instead.
+func (*GetInvoiceRequest) Descriptor() ([]byte, []int) {
+	return file_types_ptypes_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *GetInvoiceRequest) GetObuID() int32 {
+	if x != nil {
+		return x.ObuID
+	}
+	return 0
+}
+
 type None struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -92,7 +202,7 @@ type None struct {
 func (x *None) Reset() {
 	*x = None{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_types_ptypes_proto_msgTypes[1]
+		mi := &file_types_ptypes_proto_msgTypes[3]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -105,7 +215,7 @@ func (x *None) String() string {
 func (*None) ProtoMessage() {}
 
 func (x *None) ProtoReflect() protoreflect.Message {
-	mi := &file_types_ptypes_proto_msgTypes[1]
+	mi := &file_types_ptypes_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -118,7 +228,7 @@ func (x *None) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use None.ProtoReflect.Descriptor instead.
 func (*None) Descriptor() ([]byte, []int) {
-	return file_types_ptypes_proto_rawDescGZIP(), []int{1}
+	return file_types_ptypes_proto_rawDescGZIP(), []int{3}
 }
 
 var File_types_ptypes_proto protoreflect.FileDescriptor
@@ -130,13 +240,26 @@ var file_types_ptypes_proto_rawDesc = []byte{
 	0x44, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x05, 0x4f, 0x62, 0x75, 0x49, 0x44, 0x12, 0x14,
 	0x0a, 0x05, 0x56, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x01, 0x52, 0x05, 0x56,
 	0x61, 0x6c, 0x75, 0x65, 0x12, 0x12, 0x0a, 0x04, 0x55, 0x6e, 0x69, 0x78, 0x18, 0x03, 0x20, 0x01,
-	0x28, 0x03, 0x52, 0x04, 0x55, 0x6e, 0x69, 0x78, 0x22, 0x06, 0x0a, 0x04, 0x4e, 0x6f, 0x6e, 0x65,
-	0x32, 0x33, 0x0a, 0x0a, 0x41, 0x67, 0x67, 0x72, 0x65, 0x67, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x25,
-	0x0a, 0x09, 0x41, 0x67, 0x67, 0x72, 0x65, 0x67, 0x61, 0x74, 0x65, 0x12, 0x11, 0x2e, 0x41, 0x67,
-	0x67, 0x72, 0x65, 0x67, 0x61, 0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x05,
-	0x2e, 0x4e, 0x6f, 0x6e, 0x65, 0x42, 0x1a, 0x5a, 0x18, 0x74, 0x6f, 0x6c, 0x6c, 0x43, 0x61, 0x6c,
-	0x63, 0x75, 0x6c, 0x61, 0x74, 0x6f, 0x72, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x74, 0x79, 0x70, 0x65,
-	0x73, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x28, 0x03, 0x52, 0x04, 0x55, 0x6e, 0x69, 0x78, 0x22, 0x72, 0x0a, 0x12, 0x47, 0x65, 0x74, 0x49,
+	0x6e, 0x76, 0x6f, 0x69, 0x63, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x14,
+	0x0a, 0x05, 0x4f, 0x62, 0x75, 0x49, 0x44, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x05, 0x4f,
+	0x62, 0x75, 0x49, 0x44, 0x12, 0x24, 0x0a, 0x0d, 0x54, 0x6f, 0x74, 0x61, 0x6c, 0x44, 0x69, 0x73,
+	0x74, 0x61, 0x6e, 0x63, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x02, 0x52, 0x0d, 0x54, 0x6f, 0x74,
+	0x61, 0x6c, 0x44, 0x69, 0x73, 0x74, 0x61, 0x6e, 0x63, 0x65, 0x12, 0x20, 0x0a, 0x0b, 0x54, 0x6f,
+	0x74, 0x61, 0x6c, 0x41, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x18, 0x03, 0x20, 0x01, 0x28, 0x02, 0x52,
+	0x0b, 0x54, 0x6f, 0x74, 0x61, 0x6c, 0x41, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x22, 0x29, 0x0a, 0x11,
+	0x47, 0x65, 0x74, 0x49, 0x6e, 0x76, 0x6f, 0x69, 0x63, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
+	0x74, 0x12, 0x14, 0x0a, 0x05, 0x4f, 0x62, 0x75, 0x49, 0x44, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05,
+	0x52, 0x05, 0x4f, 0x62, 0x75, 0x49, 0x44, 0x22, 0x06, 0x0a, 0x04, 0x4e, 0x6f, 0x6e, 0x65, 0x32,
+	0x6a, 0x0a, 0x0a, 0x41, 0x67, 0x67, 0x72, 0x65, 0x67, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x25, 0x0a,
+	0x09, 0x41, 0x67, 0x67, 0x72, 0x65, 0x67, 0x61, 0x74, 0x65, 0x12, 0x11, 0x2e, 0x41, 0x67, 0x67,
+	0x72, 0x65, 0x67, 0x61, 0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x05, 0x2e,
+	0x4e, 0x6f, 0x6e, 0x65, 0x12, 0x35, 0x0a, 0x0a, 0x47, 0x65, 0x74, 0x49, 0x6e, 0x76, 0x6f, 0x69,
+	0x63, 0x65, 0x12, 0x12, 0x2e, 0x47, 0x65, 0x74, 0x49, 0x6e, 0x76, 0x6f, 0x69, 0x63, 0x65, 0x52,
+	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x13, 0x2e, 0x47, 0x65, 0x74, 0x49, 0x6e, 0x76, 0x6f,
+	0x69, 0x63, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x42, 0x1a, 0x5a, 0x18, 0x74,
+	0x6f, 0x6c, 0x6c, 0x43, 0x61, 0x6c, 0x63, 0x75, 0x6c, 0x61, 0x74, 0x6f, 0x72, 0x2e, 0x63, 0x6f,
+	0x6d, 0x2f, 0x74, 0x79, 0x70, 0x65, 0x73, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -151,16 +274,20 @@ func file_types_ptypes_proto_rawDescGZIP() []byte {
 	return file_types_ptypes_proto_rawDescData
 }
 
-var file_types_ptypes_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_types_ptypes_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_types_ptypes_proto_goTypes = []interface{}{
-	(*AggregateRequest)(nil), // 0: AggregateRequest
-	(*None)(nil),             // 1: None
+	(*AggregateRequest)(nil),   // 0: AggregateRequest
+	(*GetInvoiceResponse)(nil), // 1: GetInvoiceResponse
+	(*GetInvoiceRequest)(nil),  // 2: GetInvoiceRequest
+	(*None)(nil),               // 3: None
 }
 var file_types_ptypes_proto_depIdxs = []int32{
 	0, // 0: Aggregator.Aggregate:input_type -> AggregateRequest
-	1, // 1: Aggregator.Aggregate:output_type -> None
-	1, // [1:2] is the sub-list for method output_type
-	0, // [0:1] is the sub-list for method input_type
+	2, // 1: Aggregator.GetInvoice:input_type -> GetInvoiceRequest
+	3, // 2: Aggregator.Aggregate:output_type -> None
+	1, // 3: Aggregator.GetInvoice:output_type -> GetInvoiceResponse
+	2, // [2:4] is the sub-list for method output_type
+	0, // [0:2] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
@@ -185,6 +312,30 @@ func file_types_ptypes_proto_init() {
 			}
 		}
 		file_types_ptypes_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetInvoiceResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_types_ptypes_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetInvoiceRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_types_ptypes_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*None); i {
 			case 0:
 				return &v.state
@@ -203,7 +354,7 @@ func file_types_ptypes_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_types_ptypes_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
