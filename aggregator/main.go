@@ -8,7 +8,6 @@ import (
 	"log"
 	"net"
 	"net/http"
-	"strconv"
 	"time"
 
 	"google.golang.org/grpc"
@@ -68,17 +67,16 @@ func makeHttpTransport(listenAddress string, svc Aggregator) {
 
 func handleGetInvoice(svc Aggregator) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		values, ok := r.URL.Query()["obu"]
-		if !ok {
-			writeJSON(w, http.StatusBadRequest, map[string]string{"error": "missing obu ID"})
-			return
-		}
-		obuID, err := strconv.Atoi(values[0])
+		var req types.GetInvoiceRequest
+		err := r.ParseForm()
 		if err != nil {
-			writeJSON(w, http.StatusBadRequest, map[string]string{"error": "invalid obu ID"})
+			writeJSON(w, http.StatusBadRequest, map[string]string{"error": "invalid parameters"})
+		}
+		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+			writeJSON(w, http.StatusBadRequest, map[string]string{"error": err.Error()})
 			return
 		}
-		invoice, err := svc.CalculateInvoice(obuID)
+		invoice, err := svc.CalculateInvoice(int(req.ObuID))
 		if err != nil {
 			writeJSON(w, http.StatusInternalServerError, map[string]string{"error": err.Error()})
 			return

@@ -11,9 +11,9 @@ import (
 // }
 
 var (
-	kafkatopic      = "obuData"
-	httpAggEndpoint = "http://127.0.0.1:3000/aggregate"
-	grpcAggEndpoint = "127.0.0.1:3001"
+	kafkatopic   = "obuData"
+	httpEndpoint = "http://127.0.0.1:3000"
+	grpcEndpoint = "127.0.0.1:3001"
 )
 
 // Transport (HTTP, GRPC, KAFKA) -> attach business Logic
@@ -29,11 +29,12 @@ func main() {
 	// if err != nil {
 	// 	log.Fatal(err)
 	// }
-	// httpClient := client.NewHTTPClient(httpAggEndpoint)
-	grpcClient := client.NewGRPCClient(grpcAggEndpoint)
-	kafkaConsumer, err := NewKafkaConsumer(kafkatopic, svc, grpcClient)
+	httpClient := client.NewHTTPClient(httpEndpoint)
+	grpcClient := client.NewGRPCClient(grpcEndpoint)
+	kafkaConsumer, err := NewKafkaConsumer(kafkatopic, svc, httpClient)
 	if err != nil {
 		log.Fatal(err)
 	}
 	kafkaConsumer.Start()
+	_ = grpcClient
 }
