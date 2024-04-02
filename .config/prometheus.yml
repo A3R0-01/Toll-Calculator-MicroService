@@ -3,7 +3,7 @@ global:
   scrape_timeout: 10s
   evaluation_interval: 15s
 scrape_configs:
-- job_name: toll-calculator
+- job_name: aggregator
   scrape_interval: 15s
   scrape_timeout: 10s
   metrics_path: /metrics
@@ -11,4 +11,4 @@ scrape_configs:
   follow_redirects: true
   static_configs:
   - targets:
-    - localhost:3000
+    - localhost:4000
