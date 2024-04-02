@@ -19,13 +19,15 @@ import (
 const grpcEndpoint = "127.0.0.1:3001"
 
 func main() {
-	httpListenAddress := flag.String("httpAddress", ":3000", "the listen address of the http server")
+	httpListenAddress := flag.String("httpAddress", ":4000", "the listen address of the http server")
 	grpcListenAddress := flag.String("grpcAddress", ":3001", "the listen address of the http server")
 	flag.Parse()
-	store := NewMemoryStore()
+
 	var (
-		svc = NewInvoiceAggregator(store)
+		store = NewMemoryStore()
+		svc   = NewInvoiceAggregator(store)
 	)
+	svc = NewMetricsMiddleware(svc)
 	svc = NewLogMiddleware(svc)
 	go func() {
 		log.Fatal(makeGRPCTransport(*grpcListenAddress, svc))
@@ -75,7 +77,7 @@ func handleGetInvoice(svc Aggregator) http.HandlerFunc {
 			writeJSON(w, http.StatusBadRequest, map[string]string{"error": "invalid parameters"})
 		}
 		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-			writeJSON(w, http.StatusBadRequest, map[string]string{"error": err.Error()})
+			writeJSON(w, http.StatusBadRequest, map[string]string{"error": "missing obu id"})
 			return
 		}
 		invoice, err := svc.CalculateInvoice(int(req.ObuID))
@@ -90,8 +92,12 @@ func handleGetInvoice(svc Aggregator) http.HandlerFunc {
 func handleAggregate(svc Aggregator) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var distance types.Distance
+		if r.Method != "POST" {
+			writeJSON(w, http.StatusBadRequest, map[string]string{"error": "method not supported"})
+			return
+		}
 		if err := json.NewDecoder(r.Body).Decode(&distance); err != nil {
-			writeJSON(w, http.StatusBadRequest, map[string]string{"error": err.Error()})
+			writeJSON(w, http.StatusBadRequest, map[string]string{"error": "invalid parameters"})
 			return
 		}
 		if err := svc.AggregateDistance(distance); err != nil {
