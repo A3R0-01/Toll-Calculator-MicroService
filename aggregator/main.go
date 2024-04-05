@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"encoding/json"
 	"flag"
 	"fmt"
 	"log"
@@ -41,6 +40,11 @@ func main() {
 	}); err != nil {
 		log.Fatal(err)
 	}
+	res, err := c.GetInvoice(context.Background(), &types.GetInvoiceRequest{ObuID: 1})
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("response successful", res)
 	makeHttpTransport(*httpListenAddress, svc)
 	fmt.Println("this is working just fine")
 }
@@ -62,52 +66,12 @@ func makeGRPCTransport(listenAddress string, svc Aggregator) error {
 
 }
 func makeHttpTransport(listenAddress string, svc Aggregator) {
-	fmt.Println("HTTP transport running on port ", listenAddress)
-	http.HandleFunc("/aggregate", handleAggregate(svc))
-	http.HandleFunc("/invoice", handleGetInvoice(svc))
+	aggMh := newHTTPMetricHandler("aggregate")
+	calculateMh := newHTTPMetricHandler("invoice")
+	http.HandleFunc("/aggregate", aggMh.instrument(handleAggregate(svc)))
+	http.HandleFunc("/invoice", calculateMh.instrument(handleGetInvoice(svc)))
 	http.Handle("/metrics", promhttp.Handler())
+	fmt.Println("HTTP transport running on port ", listenAddress)
+
 	log.Fatal(http.ListenAndServe(listenAddress, nil))
-}
-
-func handleGetInvoice(svc Aggregator) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		var req types.GetInvoiceRequest
-		err := r.ParseForm()
-		if err != nil {
-			writeJSON(w, http.StatusBadRequest, map[string]string{"error": "invalid parameters"})
-		}
-		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-			writeJSON(w, http.StatusBadRequest, map[string]string{"error": "missing obu id"})
-			return
-		}
-		invoice, err := svc.CalculateInvoice(int(req.ObuID))
-		if err != nil {
-			writeJSON(w, http.StatusInternalServerError, map[string]string{"error": err.Error()})
-			return
-		}
-		writeJSON(w, http.StatusOK, invoice)
-	}
-}
-
-func handleAggregate(svc Aggregator) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		var distance types.Distance
-		if r.Method != "POST" {
-			writeJSON(w, http.StatusBadRequest, map[string]string{"error": "method not supported"})
-			return
-		}
-		if err := json.NewDecoder(r.Body).Decode(&distance); err != nil {
-			writeJSON(w, http.StatusBadRequest, map[string]string{"error": "invalid parameters"})
-			return
-		}
-		if err := svc.AggregateDistance(distance); err != nil {
-			writeJSON(w, http.StatusInternalServerError, map[string]string{"error": err.Error()})
-		}
-	}
-}
-
-func writeJSON(rw http.ResponseWriter, status int, v any) error {
-	rw.WriteHeader(status)
-	rw.Header().Add("Content-Type", "application/json")
-	return json.NewEncoder(rw).Encode(v)
 }
