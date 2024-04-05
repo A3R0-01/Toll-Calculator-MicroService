@@ -29,3 +29,18 @@ func (s *GRPCAggregatorServer) Aggregate(ctx context.Context, request *types.Agg
 	}
 	return &types.None{}, nil
 }
+
+func (s *GRPCAggregatorServer) GetInvoice(ctx context.Context, request *types.GetInvoiceRequest) (*types.GetInvoiceResponse, error) {
+	obuID := request.ObuID
+
+	invoice, err := s.svc.CalculateInvoice(int(obuID))
+	if err != nil {
+		return nil, err
+	}
+
+	return &types.GetInvoiceResponse{
+		ObuID:         request.ObuID,
+		TotalDistance: float32(invoice.TotalDistance),
+		TotalAmount:   float32(invoice.TotalAmount),
+	}, nil
+}
