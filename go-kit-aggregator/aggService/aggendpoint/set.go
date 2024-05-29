@@ -47,3 +47,21 @@ func (s *Set) Calculate(ctx context.Context, obuID int) (*types.Invoice, error) 
 		TotalAmount:   result.TotalAmount,
 	}, err
 }
+
+// MakeSumEndpoint constructs a Sum endpoint wrapping the service.
+func MakeAggregateEndpoint(s addservice.Service) endpoint.Endpoint {
+	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
+		req := request.(SumRequest)
+		v, err := s.Sum(ctx, req.A, req.B)
+		return SumResponse{V: v, Err: err}, nil
+	}
+}
+
+// MakeConcatEndpoint constructs a Concat endpoint wrapping the service.
+func MakeConcatEndpoint(s addservice.Service) endpoint.Endpoint {
+	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
+		req := request.(ConcatRequest)
+		v, err := s.Concat(ctx, req.A, req.B)
+		return ConcatResponse{V: v, Err: err}, nil
+	}
+}
