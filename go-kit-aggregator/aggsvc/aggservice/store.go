@@ -11,11 +11,13 @@ type MemoryStore struct {
 }
 
 func (m *MemoryStore) Insert(d types.Distance) error {
+	fmt.Println("this is coming from the bsns logic")
 	m.data[d.OBUID] += d.Value
 	return nil
 }
 
 func (m *MemoryStore) Get(id int) (float64, error) {
+	fmt.Println("this is coming from the bsns logic")
 	distance, ok := m.data[id]
 	if !ok {
 		return 0.0, fmt.Errorf("could not find distance for obu id %d", id)

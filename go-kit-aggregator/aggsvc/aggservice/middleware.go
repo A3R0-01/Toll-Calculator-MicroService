@@ -20,11 +20,11 @@ func newLoggingMiddleware() Middleware {
 }
 
 func (svc *LoggingMiddleware) Aggregate(ctx context.Context, distance types.Distance) error {
-	return nil
+	return svc.next.Aggregate(ctx, distance)
 }
 
 func (svc *LoggingMiddleware) Calculate(ctx context.Context, distInt int) (invoice *types.Invoice, err error) {
-	return &types.Invoice{}, nil
+	return svc.next.Calculate(ctx, distInt)
 }
 
 type InstrumentingMiddleware struct {
@@ -40,9 +40,9 @@ func newInstrumentingMiddleware() Middleware {
 }
 
 func (svc *InstrumentingMiddleware) Aggregate(ctx context.Context, distance types.Distance) error {
-	return nil
+	return svc.next.Aggregate(ctx, distance)
 }
 
 func (svc *InstrumentingMiddleware) Calculate(ctx context.Context, distInt int) (invoice *types.Invoice, err error) {
-	return &types.Invoice{}, nil
+	return svc.next.Calculate(ctx, distInt)
 }

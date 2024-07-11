@@ -80,7 +80,8 @@ func MakeCalculateEndpoint(s aggservice.Service) endpoint.Endpoint {
 			OBUID:         inv.OBUID,
 			TotalDistance: inv.TotalDistance,
 			TotalAmount:   inv.TotalAmount,
-		}, err
+			Err:           err,
+		}, nil
 	}
 }
 
