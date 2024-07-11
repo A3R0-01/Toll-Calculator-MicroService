@@ -9,8 +9,8 @@ import (
 const basePrice = 3.5
 
 type Service interface {
-	AggregateDistance(context.Context, types.Distance) error
-	CalculateInvoice(context.Context, int) (*types.Invoice, error)
+	Aggregate(context.Context, types.Distance) error
+	Calculate(context.Context, int) (*types.Invoice, error)
 }
 type Storer interface {
 	Get(int) (float64, error)
@@ -27,11 +27,11 @@ func NewBasicService(store Storer) Service {
 	}
 }
 
-func (svc *BasicService) AggregateDistance(ctx context.Context, distance types.Distance) error {
+func (svc *BasicService) Aggregate(ctx context.Context, distance types.Distance) error {
 	return svc.store.Insert(distance)
 }
 
-func (svc *BasicService) CalculateInvoice(ctx context.Context, obuID int) (invoice *types.Invoice, err error) {
+func (svc *BasicService) Calculate(ctx context.Context, obuID int) (invoice *types.Invoice, err error) {
 	dist, err := svc.store.Get(obuID)
 	if err != nil {
 		return nil, err
@@ -45,12 +45,12 @@ func (svc *BasicService) CalculateInvoice(ctx context.Context, obuID int) (invoi
 }
 
 // NewAggregatorService will construct a complete microservice with logging and instrumentation middleware
-func NewAggregatorService() Service {
+func New() Service {
 	var svc Service
 	{
 		svc = NewBasicService(NewMemoryStore())
 		svc = newLoggingMiddleware()(svc)
-		svc = newInstrumentationMiddleware()(svc)
+		svc = newInstrumentingMiddleware()(svc)
 	}
 	return svc
 }

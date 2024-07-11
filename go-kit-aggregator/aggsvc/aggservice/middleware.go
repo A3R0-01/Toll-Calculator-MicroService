@@ -19,30 +19,30 @@ func newLoggingMiddleware() Middleware {
 	}
 }
 
-func (svc *LoggingMiddleware) AggregateDistance(ctx context.Context, distance types.Distance) error {
+func (svc *LoggingMiddleware) Aggregate(ctx context.Context, distance types.Distance) error {
 	return nil
 }
 
-func (svc *LoggingMiddleware) CalculateDistance(ctx context.Context, distInt int) (invoice *types.Invoice, err error) {
+func (svc *LoggingMiddleware) Calculate(ctx context.Context, distInt int) (invoice *types.Invoice, err error) {
 	return &types.Invoice{}, nil
 }
 
-type InstrumentationMiddleware struct {
+type InstrumentingMiddleware struct {
 	next Service
 }
 
-func newInstrumentationMiddleware() Middleware {
+func newInstrumentingMiddleware() Middleware {
 	return func(next Service) Service {
-		return &InstrumentationMiddleware{
+		return &InstrumentingMiddleware{
 			next: next,
 		}
 	}
 }
 
-func (svc *InstrumentationMiddleware) AggregateDistance(ctx context.Context, distance types.Distance) error {
+func (svc *InstrumentingMiddleware) Aggregate(ctx context.Context, distance types.Distance) error {
 	return nil
 }
 
-func (svc *InstrumentationMiddleware) CalculateDistance(ctx context.Context, distInt int) (invoice *types.Invoice, err error) {
+func (svc *InstrumentingMiddleware) Calculate(ctx context.Context, distInt int) (invoice *types.Invoice, err error) {
 	return &types.Invoice{}, nil
 }
