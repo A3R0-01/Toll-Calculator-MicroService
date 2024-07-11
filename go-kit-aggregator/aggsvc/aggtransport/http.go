@@ -72,7 +72,7 @@ func NewHTTPHandler(endpoints aggendpoint.Set, logger log.Logger) http.Handler {
 		encodeHTTPGenericResponse,
 		options...,
 	))
-	m.Handle("/invoice", httptransport.NewServer(
+	m.Handle("/calculate", httptransport.NewServer(
 		endpoints.CalculateEndPoint,
 		decodeHTTPCalculateRequest,
 		encodeHTTPGenericResponse,
