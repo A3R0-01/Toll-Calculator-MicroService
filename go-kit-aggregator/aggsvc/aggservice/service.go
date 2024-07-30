@@ -3,6 +3,7 @@ package aggservice
 import (
 	"context"
 
+	"github.com/go-kit/log"
 	"tollCalculator.com/types"
 )
 
@@ -45,11 +46,12 @@ func (svc *BasicService) Calculate(ctx context.Context, obuID int) (invoice *typ
 }
 
 // NewAggregatorService will construct a complete microservice with logging and instrumentation middleware
-func New() Service {
+func New(logger log.Logger) Service {
 	var svc Service
 	{
+
 		svc = NewBasicService(NewMemoryStore())
-		svc = newLoggingMiddleware()(svc)
+		svc = newLoggingMiddleware(logger)(svc)
 		svc = newInstrumentingMiddleware()(svc)
 	}
 	return svc
